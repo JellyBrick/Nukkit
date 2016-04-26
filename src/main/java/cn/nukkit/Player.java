@@ -1857,8 +1857,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         }
                     }
-                } else if (item == null || slot == -1 || !item.deepEquals(mobEquipmentPacket.item)) {
-                    this.inventory.sendContents(this);
+                } else if (item == null || slot == -1) {
+                    System.out.println("\nnull item");
+                    if(!item.deepEquals(mobEquipmentPacket.item)) {
+                        System.out.println("\ndeep equals");
+                        this.inventory.sendContents(this);
+                    }
                     break;
                 } else if (this.isCreative()) {
                     this.inventory.setHeldItemIndex(mobEquipmentPacket.selectedSlot);
