@@ -66,7 +66,7 @@ public class BlockFarmland extends BlockSolid {
             Vector3 v = new Vector3();
 
             for (int x = (int) this.x - 1; x <= this.x + 1; x++) {
-                for (int z = (int) this.z - 1; z <= this.x + 1; z++) {
+                for (int z = (int) this.z - 1; z <= this.z + 1; z++) {
                     if (z == this.z && x == this.x) {
                         continue;
                     }
@@ -80,12 +80,7 @@ public class BlockFarmland extends BlockSolid {
                 }
             }
 
-            if (found) {
-                return Level.BLOCK_UPDATE_RANDOM;
-            }
-
-            Block block = this.level.getBlock(v.setComponents(x, y - 1, z));
-            if (block instanceof BlockWater) {
+            if (found || this.level.getBlock(v.setComponents(this.x, this.y - 1, this.z)) instanceof BlockWater) {
                 return Level.BLOCK_UPDATE_RANDOM;
             }
 
