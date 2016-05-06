@@ -1105,8 +1105,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     @Override
     protected void checkBlockCollision() {
-        for (Block block : this.getBlocksAround()) {
-            block.onEntityCollide(this);
+        for (Block block : this.getCollisionBlocks()) {
+            if(block.hasEntityCollision()) {
+                block.onEntityCollide(this);
+            }
         }
     }
 
@@ -1248,6 +1250,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             double yS = 0.5 + this.ySize;
             if (diffY >= -yS || diffY <= yS) {
                 diffY = 0;
+            }
+
+            for(Block block : getCollisionBlocks()){
+                if(block.hasEntityCollision()){
+                    block.onEntityCollide(this);
+                }
+
+                if(!this.inBlock && block.isSolid()){
+                    revert = true;
+                }
             }
 
             double diff = (diffX * diffX + diffY * diffY + diffZ * diffZ) / ((double) (tickDiff * tickDiff));
@@ -1425,7 +1437,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.entityBaseTick(tickDiff);
 
             if (this.isOnFire() && this.lastUpdate % 10 == 0) {
-                if (this.isCreative() && !this.isInsideOfFire()) {
+                if (this.isCreative()) {
                     this.extinguish();
                 } else if (this.getLevel().isRaining()) {
                     if (this.getLevel().canBlockSeeSky(this)) {

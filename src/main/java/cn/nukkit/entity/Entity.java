@@ -101,7 +101,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     protected EntityDamageEvent lastDamageCause = null;
 
-    private List<Block> blocksAround = new ArrayList<>();
+    private List<Block> collisionBlocks = new ArrayList<>();
 
     public double lastX;
     public double lastY;
@@ -791,11 +791,14 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public boolean entityBaseTick() {
-        return this.entityBaseTick(1);
+        return this.entityBaseTick(1, true);
     }
 
     public boolean entityBaseTick(int tickDiff) {
-        this.blocksAround = null;
+        return this.entityBaseTick(tickDiff, true);
+    }
+
+    public boolean entityBaseTick(int tickDiff, boolean checkBlocks) {
         this.justCreated = false;
 
         if (!this.isAlive()) {
@@ -823,7 +826,20 @@ public abstract class Entity extends Location implements Metadatable {
 
         boolean hasUpdate = false;
 
-        this.checkBlockCollision();
+        if(checkBlocks) {
+            this.collisionBlocks = null;
+            this.checkBlockCollision();
+        }
+
+        boolean inBlock = false;
+
+        for(Block solid : getCollisionBlocks()){
+            if(solid.isSolid()){
+                inBlock = true;
+            }
+        }
+
+        this.inBlock = inBlock;
 
         if (this.y <= -16 && this.isAlive()) {
             EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_VOID, 10);
@@ -1065,34 +1081,38 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public boolean isInsideOfWater() {
-        double y = this.y + this.getEyeHeight();
-        Block block = this.level.getBlock(this.temporalVector.setComponents(NukkitMath.floorDouble(this.x), NukkitMath.floorDouble(y), NukkitMath.floorDouble(this.z)));
+        double x = NukkitMath.floorDouble(this.x);
+        double y = NukkitMath.floorDouble(this.y + this.getEyeHeight());
+        double z = NukkitMath.floorDouble(this.z);
+        Vector3 v = this.temporalVector.setComponents(x, y, z);
 
-        if (block instanceof BlockWater) {
-            double f = (block.y + 1) - (((BlockWater) block).getFluidHeightPercent() - 0.1111111);
-            return y < f;
+        for(Block block : this.getCollisionBlocks()) {
+            if (block.equals(v) && block instanceof BlockWater) {
+                double f = (block.y + 1) - (((BlockWater) block).getFluidHeightPercent() - 0.1111111);
+                return y < f;
+            }
         }
 
         return false;
     }
 
     public boolean isInsideOfSolid() {
-        double y = this.y + this.getEyeHeight();
-        Block block = this.level.getBlock(
-                this.temporalVector.setComponents(
-                        NukkitMath.floorDouble(this.x),
-                        NukkitMath.floorDouble(y),
-                        NukkitMath.floorDouble(this.z))
-        );
+        double x = NukkitMath.floorDouble(this.x);
+        double y = NukkitMath.floorDouble(this.y + this.getEyeHeight());
+        double z = NukkitMath.floorDouble(this.z);
+        Vector3 v = this.temporalVector.setComponents(x, y, z);
 
-        AxisAlignedBB bb = block.getBoundingBox();
+        for(Block block : this.getCollisionBlocks()) {
+            if (block.equals(v) && block.isSolid() && block.collidesWithBB(this.getBoundingBox())) {
+                return true;
+            }
+        }
 
-        return bb != null && block.isSolid() && !block.isTransparent() && bb.intersectsWith(this.getBoundingBox());
-
+        return false;
     }
 
     public boolean isInsideOfFire() {
-        for (Block block : this.getBlocksAround()) {
+        for (Block block : this.getCollisionBlocks()) {
             if (block instanceof BlockFire) {
                 return true;
             }
@@ -1175,7 +1195,6 @@ public abstract class Entity extends Location implements Metadatable {
 
             this.boundingBox.offset(0, 0, dz);
 
-
             if (this.getStepHeight() > 0 && fallingFlag && this.ySize < 0.05 && (movX != dx || movZ != dz)) {
                 double cx = dx;
                 double cy = dy;
@@ -1256,36 +1275,42 @@ public abstract class Entity extends Location implements Metadatable {
         this.onGround = (movY != dy && movY < 0);
     }
 
-    public List<Block> getBlocksAround() {
-        if (this.blocksAround == null) {
-            int minX = NukkitMath.floorDouble(this.boundingBox.minX);
-            int minY = NukkitMath.floorDouble(this.boundingBox.minY);
-            int minZ = NukkitMath.floorDouble(this.boundingBox.minZ);
-            int maxX = NukkitMath.ceilDouble(this.boundingBox.maxX);
-            int maxY = NukkitMath.ceilDouble(this.boundingBox.maxY);
-            int maxZ = NukkitMath.ceilDouble(this.boundingBox.maxZ);
+    public List<Block> getCollisionBlocks() {
+        if (this.collisionBlocks == null) {
+            AxisAlignedBB bb = this.boundingBox;
 
-            this.blocksAround = new ArrayList<>();
+            int minX = NukkitMath.floorDouble(bb.minX);
+            int minY = NukkitMath.floorDouble(bb.minY);
+            int minZ = NukkitMath.floorDouble(bb.minZ);
+            int maxX = NukkitMath.ceilDouble(bb.maxX);
+            int maxY = NukkitMath.ceilDouble(bb.maxY);
+            int maxZ = NukkitMath.ceilDouble(bb.maxZ);
+
+            this.collisionBlocks = new ArrayList<>();
 
             for (int z = minZ; z <= maxZ; ++z) {
                 for (int x = minX; x <= maxX; ++x) {
                     for (int y = minY; y <= maxY; ++y) {
                         Block block = this.level.getBlock(this.temporalVector.setComponents(x, y, z));
-                        if (block.hasEntityCollision()) {
-                            this.blocksAround.add(block);
+                        if (block.collidesWithBB(bb)) {
+                            this.collisionBlocks.add(block);
                         }
                     }
                 }
             }
         }
 
-        return this.blocksAround;
+        return this.collisionBlocks;
     }
 
     protected void checkBlockCollision() {
         Vector3 vector = new Vector3(0, 0, 0);
 
-        for (Block block : this.getBlocksAround()) {
+        for (Block block : this.getCollisionBlocks()) {
+            if (!block.hasEntityCollision()) {
+                continue;
+            }
+
             block.onEntityCollide(this);
             block.addVelocityToEntity(this, vector);
         }
