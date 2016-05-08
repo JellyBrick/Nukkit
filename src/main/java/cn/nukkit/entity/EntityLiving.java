@@ -179,7 +179,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate = super.entityBaseTick(tickDiff, false);
+        boolean hasUpdate = super.entityBaseTick(tickDiff);
 
         if (this.isAlive()) {
             if (this.isInsideOfSolid()) {

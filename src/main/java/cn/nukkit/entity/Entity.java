@@ -101,7 +101,8 @@ public abstract class Entity extends Location implements Metadatable {
 
     protected EntityDamageEvent lastDamageCause = null;
 
-    private List<Block> collisionBlocks = new ArrayList<>();
+    protected List<Block> collisionBlocks = new ArrayList<>();
+    protected List<Block> groundBlocks = new ArrayList<>();
 
     public double lastX;
     public double lastY;
@@ -791,14 +792,10 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public boolean entityBaseTick() {
-        return this.entityBaseTick(1, true);
+        return this.entityBaseTick(1);
     }
 
     public boolean entityBaseTick(int tickDiff) {
-        return this.entityBaseTick(tickDiff, true);
-    }
-
-    public boolean entityBaseTick(int tickDiff, boolean checkBlocks) {
         this.justCreated = false;
 
         if (!this.isAlive()) {
@@ -826,20 +823,24 @@ public abstract class Entity extends Location implements Metadatable {
 
         boolean hasUpdate = false;
 
-        if(checkBlocks) {
+        if(!this.isPlayer) {
             this.collisionBlocks = null;
             this.checkBlockCollision();
-        }
+        } /*else {
+            Player p = (Player) this;
 
-        boolean inBlock = false;
+            if(p.forceMovement == null){
+                boolean inBlock = false;
 
-        for(Block solid : getCollisionBlocks()){
-            if(solid.isSolid()){
-                inBlock = true;
+                for(Block solid : getCollisionBlocks()){
+                    if(solid.isSolid()){
+                        inBlock = true;
+                    }
+                }
+
+                this.inBlock = inBlock;
             }
-        }
-
-        this.inBlock = inBlock;
+        }*/
 
         if (this.y <= -16 && this.isAlive()) {
             EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_VOID, 10);
@@ -1273,6 +1274,10 @@ public abstract class Entity extends Location implements Metadatable {
         this.isCollidedHorizontally = (movX != dx || movZ != dz);
         this.isCollided = (this.isCollidedHorizontally || this.isCollidedVertically);
         this.onGround = (movY != dy && movY < 0);
+    }
+
+    public List<Block> getGroundBlocks(){
+        return this.groundBlocks;
     }
 
     public List<Block> getCollisionBlocks() {
