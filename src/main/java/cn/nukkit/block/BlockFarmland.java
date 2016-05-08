@@ -60,7 +60,7 @@ public class BlockFarmland extends BlockTransparent {
 
     @Override
     public int onUpdate(int type) {
-        if (type == Level.BLOCK_UPDATE_RANDOM) {
+        if (type == Level.BLOCK_UPDATE_RANDOM && this.level.getChunk((int) this.x >> 4, (int) this.z >> 4).hasChanged()) {
             boolean found = false;
 
             Vector3 v = new Vector3();
