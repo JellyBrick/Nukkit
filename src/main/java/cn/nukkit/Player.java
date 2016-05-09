@@ -1263,9 +1263,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 this.collisionBlocks = null;
 
                 for (Block block : getCollisionBlocks()) {
-                    if (block.hasEntityCollision()) {
-                        block.onEntityCollide(this);
-                    }
+                    block.onEntityCollide(this);
 
                     if (/*!this.inBlock && */!block.isTransparent() && block.collidesWithBB(bb)) {
                         revert = true;
