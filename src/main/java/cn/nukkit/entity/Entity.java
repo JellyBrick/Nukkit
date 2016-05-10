@@ -825,8 +825,10 @@ public abstract class Entity extends Location implements Metadatable {
 
         if(!this.isPlayer) {
             this.collisionBlocks = null;
-            this.checkBlockCollision();
-        } /*else {
+        }
+
+        this.checkBlockCollision();
+        /*else {
             Player p = (Player) this;
 
             if(p.forceMovement == null){

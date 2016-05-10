@@ -1256,21 +1256,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 diffY = 0;
             }
 
-            if(this.gamemode < 3) {
-                AxisAlignedBB bb = this.boundingBox.clone();
-                bb.expand(-0.2, -0.2, -0.2);
-
-                this.collisionBlocks = null;
-
-                for (Block block : getCollisionBlocks()) {
-                    block.onEntityCollide(this);
-
-                    if (/*!this.inBlock && */!block.isTransparent() && block.collidesWithBB(bb)) {
-                        revert = true;
-                    }
-                }
-            }
-
             double diff = (diffX * diffX + diffY * diffY + diffZ * diffZ) / ((double) (tickDiff * tickDiff));
 
             if (this.isSurvival()) {
@@ -1323,6 +1308,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.lastPitch = to.pitch;
 
             if (!isFirst) {
+                getCollisionBlocks();
                 PlayerMoveEvent ev = new PlayerMoveEvent(this, from, to);
 
                 this.server.getPluginManager().callEvent(ev);
@@ -1441,6 +1427,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         if (this.spawned) {
+            this.collisionBlocks = null;
             this.processMovement(tickDiff);
 
             this.entityBaseTick(tickDiff);
@@ -1921,6 +1908,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         }
                     }
                 } else if (item == null || slot == -1 || !item.deepEquals(mobEquipmentPacket.item)) {
+                    System.out.println("deep equals");
                     this.inventory.sendContents(this);
                     break;
                 } else if (this.isCreative()) {
@@ -1931,8 +1919,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     if (mobEquipmentPacket.selectedSlot >= 0 && mobEquipmentPacket.selectedSlot < this.inventory.getHotbarSize()) {
                         this.inventory.setHeldItemIndex(mobEquipmentPacket.selectedSlot);
                         this.inventory.setHeldItemSlot(slot);
+                        System.out.println("success");
                     } else {
                         this.inventory.sendContents(this);
+                        System.out.println("last else");
                         break;
                     }
                 }
