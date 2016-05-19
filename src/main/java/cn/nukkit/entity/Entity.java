@@ -823,7 +823,7 @@ public abstract class Entity extends Location implements Metadatable {
 
         boolean hasUpdate = false;
 
-        if(!this.isPlayer) {
+        if (!this.isPlayer) {
             this.collisionBlocks = null;
         }
 
@@ -1089,7 +1089,7 @@ public abstract class Entity extends Location implements Metadatable {
         double z = NukkitMath.floorDouble(this.z);
         Vector3 v = this.temporalVector.setComponents(x, y, z);
 
-        for(Block block : this.getCollisionBlocks()) {
+        for (Block block : this.getCollisionBlocks()) {
             if (block.equals(v) && block instanceof BlockWater) {
                 double f = (block.y + 1) - (((BlockWater) block).getFluidHeightPercent() - 0.1111111);
                 return y < f;
@@ -1105,7 +1105,7 @@ public abstract class Entity extends Location implements Metadatable {
         double z = NukkitMath.floorDouble(this.z);
         Vector3 v = this.temporalVector.setComponents(x, y, z);
 
-        for(Block block : this.getCollisionBlocks()) {
+        for (Block block : this.getCollisionBlocks()) {
             if (block.equals(v) && block.isSolid() && block.collidesWithBB(this.getBoundingBox())) {
                 return true;
             }
@@ -1278,7 +1278,7 @@ public abstract class Entity extends Location implements Metadatable {
         this.onGround = (movY != dy && movY < 0);
     }
 
-    public List<Block> getGroundBlocks(){
+    public List<Block> getGroundBlocks() {
         return this.groundBlocks;
     }
 

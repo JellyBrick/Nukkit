@@ -486,7 +486,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.sleeping != null;
     }
 
-    public int getInAirTicks(){
+    public int getInAirTicks() {
         return this.inAirTicks;
     }
 
@@ -1110,7 +1110,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     @Override
     protected void checkBlockCollision() {
         for (Block block : this.getCollisionBlocks()) {
-            if(block.hasEntityCollision()) {
+            if (block.hasEntityCollision()) {
                 block.onEntityCollide(this);
             }
         }
@@ -1758,7 +1758,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 String message;
-                if (loginPacket.protocol1 != ProtocolInfo.CURRENT_PROTOCOL) {
+                if (loginPacket.protocol1 < 40) {
                     if (loginPacket.protocol1 < ProtocolInfo.CURRENT_PROTOCOL) {
                         message = "disconnectionScreen.outdatedClient";
 
@@ -1937,6 +1937,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 UseItemPacket useItemPacket = (UseItemPacket) packet;
+
+                System.out.println("use item: "+useItemPacket.face);
 
                 Vector3 blockVector = new Vector3(useItemPacket.x, useItemPacket.y, useItemPacket.z);
 
@@ -2474,7 +2476,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             case InteractPacket.ACTION_RIGHT_CLICK:
                                 cancelled = true;
 
-                                if(((EntityVehicle) targetEntity).linkedEntity != null){
+                                if (((EntityVehicle) targetEntity).linkedEntity != null) {
                                     break;
                                 }
                                 pk = new SetEntityLinkPacket();
@@ -3234,7 +3236,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.hasSpawned = new HashMap<>();
             this.spawnPosition = null;
 
-            if(this.riding instanceof EntityVehicle){
+            if (this.riding instanceof EntityVehicle) {
                 ((EntityVehicle) this.riding).linkedEntity = null;
             }
 

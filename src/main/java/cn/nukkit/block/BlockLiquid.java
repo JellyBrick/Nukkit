@@ -359,7 +359,7 @@ public abstract class BlockLiquid extends BlockTransparent {
                     ++x;
                 } else if (j == 2) {
                     --z;
-                } else{
+                } else {
                     ++z;
                 }
                 Block blockSide = this.getLevel().getBlock(this.temporalVector.setComponents(x, y, z));
