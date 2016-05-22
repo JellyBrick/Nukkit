@@ -1938,8 +1938,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                 UseItemPacket useItemPacket = (UseItemPacket) packet;
 
-                System.out.println("use item: "+useItemPacket.face);
-
                 Vector3 blockVector = new Vector3(useItemPacket.x, useItemPacket.y, useItemPacket.z);
 
                 this.craftingType = 0;
