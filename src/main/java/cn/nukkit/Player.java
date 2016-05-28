@@ -2578,9 +2578,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         boolean fastEat = System.currentTimeMillis() - lastEat < 1800; //2 seconds
 
                         PlayerItemConsumeEvent consumeEvent = new PlayerItemConsumeEvent(this, itemInHand, fastEat);
-                        if(fastEat){
+                        /*if(fastEat){
                             consumeEvent.setCancelled();
-                        }
+                        }*/
 
                         this.server.getPluginManager().callEvent(consumeEvent);
                         if (consumeEvent.isCancelled()) {
