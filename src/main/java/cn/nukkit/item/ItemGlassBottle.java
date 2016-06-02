@@ -21,6 +21,11 @@ public class ItemGlassBottle extends Item {
     }
 
     @Override
+    public boolean canBeActivated(){
+        return true;
+    }
+
+    @Override
     public boolean onActivate(Level level, Player player, Block block, Block target, int face, double fx, double fy, double fz) {
         if (target instanceof BlockWater) {
             if (this.getCount() > 1) {

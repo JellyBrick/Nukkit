@@ -1919,10 +1919,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     if (mobEquipmentPacket.selectedSlot >= 0 && mobEquipmentPacket.selectedSlot < this.inventory.getHotbarSize()) {
                         this.inventory.setHeldItemIndex(mobEquipmentPacket.selectedSlot);
                         this.inventory.setHeldItemSlot(slot);
-                        System.out.println("success");
                     } else {
                         this.inventory.sendContents(this);
-                        System.out.println("last else");
                         break;
                     }
                 }
@@ -2969,7 +2967,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 if (transaction.getSourceItem().deepEquals(transaction.getTargetItem()) && transaction.getTargetItem().getCount() == transaction.getSourceItem().getCount()) { //No changes!
-                    //No changes, just a local inventory update sent by the server
                     break;
                 }
 

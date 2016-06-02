@@ -140,7 +140,6 @@ public class SimpleTransactionGroup implements TransactionGroup {
         }
 
         this.hasExecuted = true;
-
         return true;
     }
 
