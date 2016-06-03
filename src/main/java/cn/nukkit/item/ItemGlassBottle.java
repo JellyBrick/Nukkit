@@ -29,12 +29,12 @@ public class ItemGlassBottle extends Item {
     public boolean onActivate(Level level, Player player, Block block, Block target, int face, double fx, double fy, double fz) {
         if (target instanceof BlockWater) {
             if (this.getCount() > 1) {
-                if (player.getInventory().canAddItem(Item.get(Item.POTION))) {
+                if (player.getInventory().canAddItem(new ItemPotion())) {
                     this.setCount(this.getCount() - 1);
-                    player.getInventory().addItem(Item.get(Item.POTION));
+                    player.getInventory().addItem(new ItemPotion());
                 }
             } else {
-                player.getInventory().setItemInHand(Item.get(Item.POTION));
+                player.getInventory().setItemInHand(new ItemPotion());
             }
 
             return true;
