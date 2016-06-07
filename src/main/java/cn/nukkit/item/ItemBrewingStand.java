@@ -1,6 +1,5 @@
 package cn.nukkit.item;
 
-
 import cn.nukkit.block.BlockBrewingStand;
 
 public class ItemBrewingStand extends Item {

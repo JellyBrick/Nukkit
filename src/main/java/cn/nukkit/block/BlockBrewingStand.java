@@ -61,7 +61,7 @@ public class BlockBrewingStand extends BlockSolid {
         int faces[] = {4, 2, 5, 3};
 
         meta = faces[player != null ? player.getDirection() : 0];
-        getLevel().setBlock(block, this, true, true);
+        this.getLevel().setBlock(block, this, true, true);
 
         CompoundTag nbt = new CompoundTag()
                 .putList(new ListTag<>("Items"))
