@@ -1106,7 +1106,7 @@ public abstract class Entity extends Location implements Metadatable {
         Vector3 v = this.temporalVector.setComponents(x, y, z);
 
         for (Block block : this.getCollisionBlocks()) {
-            if (block.equals(v) && block.isSolid() && block.collidesWithBB(this.getBoundingBox())) {
+            if (block.isSolid() && block.equals(v) && block.collidesWithBB(this.getBoundingBox())) {
                 return true;
             }
         }

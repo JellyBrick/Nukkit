@@ -639,7 +639,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     }
 
     public boolean isSolid() {
-        return true;
+        return false;
     }
 
     public boolean canBeFlowedInto() {
