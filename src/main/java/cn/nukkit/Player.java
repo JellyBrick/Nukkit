@@ -30,6 +30,11 @@ import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
 import cn.nukkit.inventory.*;
 import cn.nukkit.item.*;
+import cn.nukkit.item.enchantment.Enchantment;
+import cn.nukkit.item.enchantment.EnchantmentFireAspect;
+import cn.nukkit.item.enchantment.EnchantmentKnockback;
+import cn.nukkit.item.enchantment.damage.EnchantmentDamageAll;
+import cn.nukkit.item.enchantment.protection.EnchantmentProtectionAll;
 import cn.nukkit.item.food.Food;
 import cn.nukkit.level.ChunkLoader;
 import cn.nukkit.level.Level;
@@ -2431,7 +2436,30 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     };
 
                     HashMap<Integer, Float> damage = new HashMap<>();
-                    damage.put(EntityDamageEvent.MODIFIER_BASE, damageTable.getOrDefault(item.getId(), 1f));
+
+                    float damageBase = damageTable.getOrDefault(item.getId(), 1f);
+                    int fire = 0;
+                    float knockback = 0.4f;
+
+                    if(item.hasEnchantments()){
+                        EnchantmentDamageAll sh = (EnchantmentDamageAll) item.getEnchantment(Enchantment.ID_DAMAGE_ALL);
+                        EnchantmentFireAspect fireAspect = (EnchantmentFireAspect) item.getEnchantment(Enchantment.ID_FIRE_ASPECT);
+                        EnchantmentKnockback knockBack = (EnchantmentKnockback) item.getEnchantment(Enchantment.ID_KNOCKBACK);
+
+                        if(sh != null && sh.getLevel() > 0){
+                            damageBase += 0.5 + sh.getLevel() * 0.5;
+                        }
+
+                        if(fireAspect != null && fireAspect.getLevel() > 0){
+                            fire += 4 * fireAspect.getLevel();
+                        }
+
+                        if(knockBack != null && knockBack.getLevel() > 0){
+                            knockback += knockBack.getLevel() * 0.2;
+                        }
+                    }
+
+                    damage.put(EntityDamageEvent.MODIFIER_BASE, damageBase);
 
                     if (!this.canInteract(targetEntity, 8)) {
                         cancelled = true;
@@ -2470,6 +2498,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         float points = 0;
                         for (Item i : ((Player) targetEntity).getInventory().getArmorContents()) {
                             points += armorValues.getOrDefault(i.getId(), 0f);
+
+                            EnchantmentProtectionAll ench = (EnchantmentProtectionAll) i.getEnchantment(Enchantment.ID_PROTECTION_ALL);
+
+                            if(ench != null){
+                                points += ench.getLevel();
+                            }
                         }
 
                         damage.put(EntityDamageEvent.MODIFIER_ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.MODIFIER_ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.MODIFIER_BASE, 1f) * points * 0.04)));
@@ -2520,7 +2554,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         }
                     }
 
-                    EntityDamageByEntityEvent entityDamageByEntityEvent = new EntityDamageByEntityEvent(this, targetEntity, EntityDamageEvent.CAUSE_ENTITY_ATTACK, damage);
+                    EntityDamageByEntityEvent entityDamageByEntityEvent = new EntityDamageByEntityEvent(this, targetEntity, EntityDamageEvent.CAUSE_ENTITY_ATTACK, damage, knockback);
                     if (cancelled) {
                         entityDamageByEntityEvent.setCancelled();
                     }
@@ -2532,6 +2566,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.inventory.sendContents(this);
                         }
                         break;
+                    } else if(fire > 0){
+                        targetEntity.setOnFire(fire);
                     }
 
                     if (item.isTool() && this.isSurvival()) {
