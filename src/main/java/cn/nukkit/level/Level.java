@@ -1496,10 +1496,10 @@ public class Level implements ChunkManager, Metadatable {
                 breakTime *= 1 - (0.3 * eff.getLevel());
             }
 
-            breakTime -= 50;
+            breakTime -= 70;
 
             if ((player.lastBreak + breakTime) > System.currentTimeMillis()) {
-                System.out.println("diff: " + ((player.lastBreak + breakTime) - System.currentTimeMillis()));
+                //System.out.println("diff: " + ((player.lastBreak + breakTime) - System.currentTimeMillis()));
             }
 
             BlockBreakEvent ev = new BlockBreakEvent(player, target, item, player.isCreative(), (player.lastBreak + breakTime) > System.currentTimeMillis());
