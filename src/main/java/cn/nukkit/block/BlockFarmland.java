@@ -58,7 +58,7 @@ public class BlockFarmland extends BlockTransparent {
         );
     }
 
-    @Override
+    /*@Override
     public int onUpdate(int type) {
         if (type == Level.BLOCK_UPDATE_RANDOM && this.level.getChunk((int) this.x >> 4, (int) this.z >> 4).hasChanged()) {
             boolean found = false;
@@ -91,7 +91,7 @@ public class BlockFarmland extends BlockTransparent {
         }
 
         return 0;
-    }
+    }*/
 
     @Override
     public int[][] getDrops(Item item) {
