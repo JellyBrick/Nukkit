@@ -329,7 +329,6 @@ public abstract class BlockLiquid extends BlockTransparent {
             }
 
             this.getLevel().setBlock(block, this.getBlock(newFlowDecay), true);
-            this.getLevel().scheduleUpdate(block, this.tickRate());
         }
     }
 
@@ -384,6 +383,11 @@ public abstract class BlockLiquid extends BlockTransparent {
     @Override
     public double getHardness() {
         return 100;
+    }
+
+    @Override
+    public double getResistance() {
+        return 500;
     }
 
     private boolean[] getOptimalFlowDirections() {
