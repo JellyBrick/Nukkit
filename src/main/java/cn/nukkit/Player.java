@@ -1116,10 +1116,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     @Override
     protected void checkBlockCollision() {
+        int inPortalTicks = this.inPortalTicks;
+
         for (Block block : this.getCollisionBlocks()) {
             if (block.hasEntityCollision()) {
                 block.onEntityCollide(this);
             }
+        }
+
+        if(inPortalTicks == this.inPortalTicks){
+            this.inPortalTicks = 0;
         }
     }
 
@@ -1434,7 +1440,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         if (this.spawned) {
-            this.collisionBlocks = null;
+
+            if(this.newPosition != null && !this.newPosition.equals(this)) {
+                this.collisionBlocks = null;
+            }
+
             this.processMovement(tickDiff);
 
             this.entityBaseTick(tickDiff);

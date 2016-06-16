@@ -79,7 +79,7 @@ public class BlockNetherPortal extends BlockFlowable {
     public void onEntityCollide(Entity entity) {
         entity.inPortalTicks++;
 
-        if (entity.inPortalTicks >= 80) {
+        if (entity.inPortalTicks == 80) {
             EntityPortalEnterEvent ev = new EntityPortalEnterEvent(entity, EntityPortalEnterEvent.TYPE_NETHER);
             this.level.getServer().getPluginManager().callEvent(ev);
 
