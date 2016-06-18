@@ -3537,6 +3537,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     //todo something on performance, lots of exp orbs then lots of packets, could crash client
 
     public void setExperience(int exp, int level) {
+    	if (!this.spawned) return;
         this.exp = exp;
         this.expLevel = level;
 
@@ -3558,6 +3559,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendExperienceLevel(int level) {
+    	if (!this.spawned) return;
         this.setAttribute(Attribute.getAttribute(Attribute.EXPERIENCE_LEVEL).setValue(level));
     }
 
