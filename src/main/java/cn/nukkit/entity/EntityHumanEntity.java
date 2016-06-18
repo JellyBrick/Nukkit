@@ -1,10 +1,13 @@
 package cn.nukkit.entity;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.BlockAir;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
+import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -91,17 +94,51 @@ public abstract class EntityHumanEntity extends EntityCreature implements Invent
         return new Item[0];
     }
 
+    @Override
     public void attack(EntityDamageEvent source){
         if (!this.isAlive()) {
             return;
         }
 
+        if(source.getCause() != EntityDamageEvent.CAUSE_VOID){
+            int points = 0;
+            int epf = 0;
 
+            for(Item armor : inventory.getArmorContents()){
+                points += armor.getArmorPoints();
+                epf += calculateEnchantmentReduction(armor, source);
+            }
+
+            source.setDamage(points, EntityDamageEvent.MODIFIER_ARMOR);
+            source.setDamage(epf, EntityDamageEvent.MODIFIER_ARMOR_ENCHANTMENTS);
+        }
 
         super.attack(source);
 
         if(!source.isCancelled()){
+            for (int i = 0; i < 4; i++) {
+                Item armor = inventory.getItem(inventory.getSize() + i);
 
+                armor.setDamage(armor.getDamage() - 1);
+
+                if(armor.getDamage() <= 0){
+                    inventory.setItem(inventory.getSize() + i, new ItemBlock(new BlockAir()));
+                }
+            }
         }
+    }
+
+    protected double calculateEnchantmentReduction(Item item, EntityDamageEvent source){
+        if(!item.hasEnchantments()){
+            return 0;
+        }
+
+        double reduction = 0;
+
+        for(Enchantment ench : item.getEnchantments()){
+            reduction += ench.getDamageProtection(source);
+        }
+
+        return reduction;
     }
 }
