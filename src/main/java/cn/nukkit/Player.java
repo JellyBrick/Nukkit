@@ -1542,6 +1542,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void tryAuthenticate() {
+        PlayStatusPacket pk = new PlayStatusPacket();
+        pk.status = PlayStatusPacket.LOGIN_SUCCESS;
+        this.dataPacket(pk);
+
         this.authenticateCallback(true);
     }
 
@@ -1589,6 +1593,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
             }
         }
+
+        this.setNameTag(this.username);
 
         CompoundTag nbt = this.server.getOfflinePlayerData(this.username);
         if (nbt == null) {
@@ -1769,7 +1775,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 LoginPacket loginPacket = (LoginPacket) packet;
                 this.username = TextFormat.clean(loginPacket.username);
                 this.displayName = this.username;
-                this.setNameTag(this.username);
                 this.iusername = this.username.toLowerCase();
 
                 if (this.server.getOnlinePlayers().size() >= this.server.getMaxPlayers() && this.kick("disconnectionScreen.serverFull", false)) {
