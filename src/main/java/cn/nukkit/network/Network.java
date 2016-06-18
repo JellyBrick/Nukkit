@@ -79,6 +79,7 @@ public class Network {
                 interfaz.emergencyShutdown();
                 this.unregisterInterface(interfaz);
                 this.server.getLogger().critical("[Network] Stopped interface "+interfaz.getClass().getName()+" due to "+e.getMessage());
+                this.server.getLogger().critical(this.server.getLanguage().translateString("nukkit.server.networkError", new String[]{interfaz.getClass().getName(), e.getMessage()}));
             }
         }
     }
@@ -140,12 +141,12 @@ public class Network {
                 offset += pkLen;
 
                 DataPacket pk;
-                //TODO: CHECK THIS HACK FOR 0.14
-                if ((pk = this.getPacket(buf[1])) != null) {
+                if ((pk = this.getPacket(buf[0])) != null) {
                     if (pk.pid() == ProtocolInfo.BATCH_PACKET) {
                         throw new IllegalStateException("Invalid BatchPacket inside BatchPacket");
                     }
-
+                    
+                    pk.setBuffer(buf, 1);
                     pk.setBuffer(buf);
                     pk.setOffset(2);
 
@@ -204,7 +205,6 @@ public class Network {
         this.registerPacket(ProtocolInfo.SET_TIME_PACKET, SetTimePacket.class);
         this.registerPacket(ProtocolInfo.START_GAME_PACKET, StartGamePacket.class);
         this.registerPacket(ProtocolInfo.ADD_PLAYER_PACKET, AddPlayerPacket.class);
-        this.registerPacket(ProtocolInfo.REMOVE_PLAYER_PACKET, RemovePlayerPacket.class);
         this.registerPacket(ProtocolInfo.ADD_ENTITY_PACKET, AddEntityPacket.class);
         this.registerPacket(ProtocolInfo.REMOVE_ENTITY_PACKET, RemoveEntityPacket.class);
         this.registerPacket(ProtocolInfo.ADD_ITEM_ENTITY_PACKET, AddItemEntityPacket.class);
