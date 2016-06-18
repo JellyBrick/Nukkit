@@ -79,7 +79,6 @@ public class Network {
                 interfaz.emergencyShutdown();
                 this.unregisterInterface(interfaz);
                 this.server.getLogger().critical("[Network] Stopped interface "+interfaz.getClass().getName()+" due to "+e.getMessage());
-                this.server.getLogger().critical(this.server.getLanguage().translateString("nukkit.server.networkError", new String[]{interfaz.getClass().getName(), e.getMessage()}));
             }
         }
     }
@@ -147,8 +146,6 @@ public class Network {
                     }
                     
                     pk.setBuffer(buf, 1);
-                    pk.setBuffer(buf);
-                    pk.setOffset(2);
 
                     pk.decode();
                     p.handleDataPacket(pk);
