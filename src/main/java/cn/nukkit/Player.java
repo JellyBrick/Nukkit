@@ -1777,8 +1777,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 String message;
-                if (loginPacket.protocol1 < 41) {
-                    if (loginPacket.protocol1 < ProtocolInfo.CURRENT_PROTOCOL) {
+                if (loginPacket.protocol < 41) {
+                    if (loginPacket.protocol < ProtocolInfo.CURRENT_PROTOCOL) {
                         message = "disconnectionScreen.outdatedClient";
 
                         PlayStatusPacket pk = new PlayStatusPacket();
@@ -1799,7 +1799,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                 this.uuid = loginPacket.clientUUID;
                 this.rawUUID = Binary.writeUUID(this.uuid);
-                this.clientSecret = loginPacket.clientSecret;
 
                 boolean valid = true;
                 int len = loginPacket.username.length();
@@ -1831,7 +1830,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 }
 
-                this.setSkin(loginPacket.skin);
+                this.setSkin(loginPacket.getSkin());
 
                 PlayerPreLoginEvent playerPreLoginEvent;
                 this.server.getPluginManager().callEvent(playerPreLoginEvent = new PlayerPreLoginEvent(this, "Plugin reason"));
@@ -3537,6 +3536,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     //todo something on performance, lots of exp orbs then lots of packets, could crash client
 
     public void setExperience(int exp, int level) {
+    	if (!this.spawned) return;
         this.exp = exp;
         this.expLevel = level;
 
@@ -3558,6 +3558,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendExperienceLevel(int level) {
+    	if (!this.spawned) return;
         this.setAttribute(Attribute.getAttribute(Attribute.EXPERIENCE_LEVEL).setValue(level));
     }
 
