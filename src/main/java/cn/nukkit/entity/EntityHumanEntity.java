@@ -95,47 +95,54 @@ public abstract class EntityHumanEntity extends EntityCreature implements Invent
     }
 
     @Override
-    public void attack(EntityDamageEvent source){
+    public void attack(EntityDamageEvent source) {
         if (!this.isAlive()) {
             return;
         }
 
-        if(source.getCause() != EntityDamageEvent.CAUSE_VOID){
+        if (source.getCause() != EntityDamageEvent.CAUSE_VOID) {
             int points = 0;
             int epf = 0;
 
-            for(Item armor : inventory.getArmorContents()){
+            for (Item armor : inventory.getArmorContents()) {
                 points += armor.getArmorPoints();
                 epf += calculateEnchantmentReduction(armor, source);
             }
 
-            source.setDamage(points, EntityDamageEvent.MODIFIER_ARMOR);
-            source.setDamage(epf, EntityDamageEvent.MODIFIER_ARMOR_ENCHANTMENTS);
+            float originalDamage = source.getDamage();
+            float r = (source.getDamage(EntityDamageEvent.MODIFIER_ARMOR) - (originalDamage - originalDamage * (1 - Math.max(points / 5, points - originalDamage / 2) / 25)));
+
+            originalDamage += r;
+
+            epf = Math.min(20, epf);
+
+            source.setDamage(r, EntityDamageEvent.MODIFIER_ARMOR);
+            source.setDamage(source.getDamage(EntityDamageEvent.MODIFIER_ARMOR_ENCHANTMENTS) - (originalDamage - originalDamage * (1 - epf / 25)), EntityDamageEvent.MODIFIER_ARMOR_ENCHANTMENTS);
         }
 
         super.attack(source);
 
-        if(!source.isCancelled()){
+        if (!source.isCancelled()) {
             for (int i = 0; i < 4; i++) {
                 Item armor = inventory.getItem(inventory.getSize() + i);
 
                 armor.setDamage(armor.getDamage() - 1);
 
-                if(armor.getDamage() <= 0){
+                if (armor.getDamage() <= 0) {
                     inventory.setItem(inventory.getSize() + i, new ItemBlock(new BlockAir()));
                 }
             }
         }
     }
 
-    protected double calculateEnchantmentReduction(Item item, EntityDamageEvent source){
-        if(!item.hasEnchantments()){
+    protected double calculateEnchantmentReduction(Item item, EntityDamageEvent source) {
+        if (!item.hasEnchantments()) {
             return 0;
         }
 
         double reduction = 0;
 
-        for(Enchantment ench : item.getEnchantments()){
+        for (Enchantment ench : item.getEnchantments()) {
             reduction += ench.getDamageProtection(source);
         }
 
