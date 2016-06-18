@@ -3,6 +3,7 @@ package cn.nukkit.block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityPortalEnterEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.utils.BlockColor;
 
 /**
@@ -10,7 +11,7 @@ import cn.nukkit.utils.BlockColor;
  * Package cn.nukkit.block in project nukkit .
  * The name NetherPortalBlock comes from minecraft wiki.
  */
-public class BlockNetherPortal extends BlockFlowable {
+public class BlockNetherPortal extends BlockTransparent {
 
     public BlockNetherPortal() {
         this(0);
@@ -99,5 +100,4 @@ public class BlockNetherPortal extends BlockFlowable {
     public BlockColor getColor() {
         return BlockColor.AIR_BLOCK_COLOR;
     }
-
 }

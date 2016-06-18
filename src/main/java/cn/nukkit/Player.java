@@ -1125,7 +1125,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         if(inPortalTicks == this.inPortalTicks){
-            System.out.println("portal ticks 0");
             this.inPortalTicks = 0;
         }
     }
