@@ -3106,6 +3106,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 chunkRadiusUpdatePacket.radius = this.viewDistance;
                 this.dataPacket(chunkRadiusUpdatePacket);
                 break;
+            case ProtocolInfo.RIDER_JUMP_PACKET:
+                System.out.println("jump");
+                break;
             default:
                 break;
         }
