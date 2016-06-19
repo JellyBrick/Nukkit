@@ -1,5 +1,8 @@
 package cn.nukkit.network.protocol;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * author: MagicDroidX & iNevet
  * Nukkit Project
@@ -10,6 +13,7 @@ public interface ProtocolInfo {
      * Actual Minecraft: PE protocol version
      */
     byte CURRENT_PROTOCOL = 81;
+    ArrayList<Integer> acceptedProtocols = new ArrayList<>(Arrays.asList(81, 82));
 
     byte LOGIN_PACKET = (byte) 0x01;
     byte PLAY_STATUS_PACKET = (byte) 0x02;
