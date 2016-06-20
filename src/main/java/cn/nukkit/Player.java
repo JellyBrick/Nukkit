@@ -1009,6 +1009,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 		0x80000000 ?
 		*/
         int flags = 0;
+
+        flags |= 0x02;
+
         if (this.isAdventure()) {
             flags |= 0x01; //Do not allow placing/breaking blocks, adventure mode
         }
