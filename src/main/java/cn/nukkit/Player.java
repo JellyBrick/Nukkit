@@ -808,6 +808,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
 
+        if(System.currentTimeMillis() - lastReceived < 500){
+            lastPackets.push(packet.getClass().getName());
+            if(lastPackets.size() > 15){
+                lastPackets.removeFirst();
+            }
+        }
+
         DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
         this.server.getPluginManager().callEvent(ev);
         if (ev.isCancelled()) {
@@ -1755,10 +1762,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.server.onPlayerLogin(this);
     }
 
+    private Deque<String> lastPackets = new ArrayDeque<>();
+    private long lastReceived = Long.MAX_VALUE;
+
     public void handleDataPacket(DataPacket packet) {
         if (!connected) {
             return;
         }
+
+        lastReceived = System.currentTimeMillis();
 
         if (packet.pid() == ProtocolInfo.BATCH_PACKET) {
             this.server.getNetwork().processBatch((BatchPacket) packet, this);
