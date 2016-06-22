@@ -808,6 +808,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
 
+        System.out.println(packet.getClass().getName());
+
         if(System.currentTimeMillis() - lastReceived < 500){
             lastPackets.push(packet.getClass().getName());
             if(lastPackets.size() > 15){
