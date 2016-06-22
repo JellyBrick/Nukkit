@@ -812,9 +812,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
 
-        /*if(!(packet instanceof BatchPacket)) {
+        if(!(packet instanceof BatchPacket)) {
             System.out.println(packet.getClass().getName());
-        }*/
+        }
 
         DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
         this.server.getPluginManager().callEvent(ev);
