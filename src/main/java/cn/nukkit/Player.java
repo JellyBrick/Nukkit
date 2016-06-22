@@ -3256,6 +3256,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void close(TextContainer message, String reason, boolean notify) {
         if (this.connected && !this.closed) {
+            for(String s : lastPackets){
+                System.out.println(s);
+            }
+
             if (notify && reason.length() > 0) {
                 DisconnectPacket pk = new DisconnectPacket();
                 pk.message = reason;
