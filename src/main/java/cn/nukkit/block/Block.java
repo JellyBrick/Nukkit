@@ -551,10 +551,10 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
                 constructor.setAccessible(true);
                 block = (Block) constructor.newInstance(meta);
             } else {
-                block = new BlockUnknown(id, meta);
+                block = new BlockUnknown(248, 0);
             }
         } catch (Exception e) {
-            block = new BlockUnknown(id, meta);
+            block = new BlockUnknown(248, 0);
         }
 
         if (pos != null) {
