@@ -268,7 +268,7 @@ public abstract class BlockLiquid extends BlockTransparent {
 
             Block bottomBlock = this.level.getBlock(this.temporalVector.setComponents(this.x, this.y - 1, this.z));
 
-            if (bottomBlock.canBeFlowedInto() || bottomBlock instanceof BlockLiquid) {
+            if (bottomBlock.canBeFlowedInto() || (bottomBlock instanceof BlockLiquid && !(this instanceof BlockWater && bottomBlock instanceof BlockWater))) {
                 if (this instanceof BlockLava && bottomBlock instanceof BlockWater) {
                     this.getLevel().setBlock(bottomBlock, new BlockStone(), true);
                     this.triggerLavaMixEffects(bottomBlock);
@@ -329,7 +329,6 @@ public abstract class BlockLiquid extends BlockTransparent {
             }
 
             this.getLevel().setBlock(block, this.getBlock(newFlowDecay), true);
-            this.getLevel().scheduleUpdate(block, this.tickRate());
         }
     }
 
@@ -384,6 +383,11 @@ public abstract class BlockLiquid extends BlockTransparent {
     @Override
     public double getHardness() {
         return 100;
+    }
+
+    @Override
+    public double getResistance() {
+        return 500;
     }
 
     private boolean[] getOptimalFlowDirections() {
