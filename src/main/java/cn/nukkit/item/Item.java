@@ -148,7 +148,6 @@ public class Item implements Cloneable {
 
     public static final int REDSTONE_TORCH = 76;
     public static final int STONE_BUTTON = 77;
-
     public static final int SNOW = 78;
     public static final int SNOW_LAYER = 78;
     public static final int ICE = 79;
@@ -232,7 +231,6 @@ public class Item implements Cloneable {
     public static final int FLOWER_POT_BLOCK = 140;
     public static final int CARROT_BLOCK = 141;
     public static final int POTATO_BLOCK = 142;
-
     public static final int WOODEN_BUTTON = 143;
 
     public static final int SKULL_BLOCK = 144;

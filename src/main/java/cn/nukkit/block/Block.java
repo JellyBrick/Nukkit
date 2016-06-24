@@ -123,7 +123,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int LIT_REDSTONE_ORE = 74;
 
     public static final int REDSTONE_TORCH = 76;
-
+    public static final int STONE_BUTTON = 77;
     public static final int SNOW = 78;
     public static final int SNOW_LAYER = 78;
     public static final int ICE = 79;
@@ -206,7 +206,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int FLOWER_POT_BLOCK = 140;
     public static final int CARROT_BLOCK = 141;
     public static final int POTATO_BLOCK = 142;
-
+    public static final int WOODEN_BUTTON = 143;
     public static final int SKULL_BLOCK = 144;
     public static final int ANVIL = 145;
     public static final int TRAPPED_CHEST = 146;
