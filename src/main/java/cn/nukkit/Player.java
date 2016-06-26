@@ -812,10 +812,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
 
-        if(!(packet instanceof BatchPacket)) {
-            System.out.println(packet.getClass().getName());
-        }
-
         DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
         this.server.getPluginManager().callEvent(ev);
         if (ev.isCancelled()) {
@@ -1592,8 +1588,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         for (Player p : new ArrayList<>(this.server.getOnlinePlayers().values())) {
-            if(p != this && p.getName().toLowerCase().equals(this.getName().toLowerCase())){
-                this.close(TextFormat.RED+"The same nick is already playing");
+            if (p != this && p.getName().toLowerCase().equals(this.getName().toLowerCase())) {
+                this.close(TextFormat.RED + "The same nick is already playing");
             }
         }
 
