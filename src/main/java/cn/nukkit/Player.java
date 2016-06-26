@@ -808,10 +808,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
 
-        if(packet.pid() == ProtocolInfo.BLOCK_ENTITY_DATA_PACKET){
-            return -1;
-        }
-
         DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
         this.server.getPluginManager().callEvent(ev);
         if (ev.isCancelled()) {
