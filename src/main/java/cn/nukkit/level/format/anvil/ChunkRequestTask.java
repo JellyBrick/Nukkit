@@ -1,6 +1,7 @@
 package cn.nukkit.level.format.anvil;
 
 import cn.nukkit.Server;
+import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.level.Level;
@@ -56,6 +57,24 @@ public class ChunkRequestTask extends AsyncTask {
         byte[] skyLight = chunk.getBlockSkyLightArray();
         int[] heightMap = chunk.getHeightMapArray();
         int[] biomeColors = chunk.getBiomeColorArray();
+
+        /**
+         * 0.15.0 modification
+         */
+
+        for(int i = 0; i < ids.length; i++){
+            byte id = ids[i];
+            //byte meta2 = meta[i];
+
+            if(Block.get(id).getId() == 248){
+                ids[i] = (byte) 248;
+            }
+        }
+
+        /**
+         *
+         */
+
         ByteBuffer buffer = ByteBuffer.allocate(
                 16 * 16 * (128 + 64 + 64 + 64)
                         + 256
