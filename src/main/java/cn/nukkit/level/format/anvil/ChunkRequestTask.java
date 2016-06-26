@@ -62,14 +62,14 @@ public class ChunkRequestTask extends AsyncTask {
          * 0.15.0 modification
          */
 
-        for(int i = 0; i < ids.length; i++){
+        /*for(int i = 0; i < ids.length; i++){
             byte id = ids[i];
             //byte meta2 = meta[i];
 
             if(Block.get(id).getId() == 248){
                 ids[i] = (byte) 248;
             }
-        }
+        }*/
 
         /**
          *
