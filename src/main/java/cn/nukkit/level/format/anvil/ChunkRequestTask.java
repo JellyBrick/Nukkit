@@ -63,7 +63,7 @@ public class ChunkRequestTask extends AsyncTask {
          * 0.15.0 modification
          */
 
-        for(int i = 0; i < ids.length; i++){
+        /*for(int i = 0; i < ids.length; i++){
             byte id = ids[i];
             //byte meta2 = meta[i];
 
@@ -71,7 +71,7 @@ public class ChunkRequestTask extends AsyncTask {
                 System.out.println("update block");
                 ids[i] = (byte) 248;
             }
-        }
+        }*/
 
         /**
          *
