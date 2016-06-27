@@ -2,6 +2,7 @@ package cn.nukkit.level.format.anvil;
 
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockUnknown;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.level.Level;
@@ -62,14 +63,15 @@ public class ChunkRequestTask extends AsyncTask {
          * 0.15.0 modification
          */
 
-        /*for(int i = 0; i < ids.length; i++){
+        for(int i = 0; i < ids.length; i++){
             byte id = ids[i];
             //byte meta2 = meta[i];
 
-            if(Block.get(id).getId() == 248){
+            if(Block.get(id) instanceof BlockUnknown){
+                System.out.println("update block");
                 ids[i] = (byte) 248;
             }
-        }*/
+        }
 
         /**
          *
