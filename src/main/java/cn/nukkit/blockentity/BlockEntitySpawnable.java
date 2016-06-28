@@ -26,7 +26,7 @@ public abstract class BlockEntitySpawnable extends BlockEntity {
             return;
         }
 
-        /*CompoundTag tag = this.getSpawnCompound();
+        CompoundTag tag = this.getSpawnCompound();
         BlockEntityDataPacket pk = new BlockEntityDataPacket();
         pk.x = (int) this.x;
         pk.y = (int) this.y;
@@ -36,7 +36,7 @@ public abstract class BlockEntitySpawnable extends BlockEntity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        player.dataPacket(pk);*/
+        player.dataPacket(pk);
     }
 
     public void spawnToAll() {
