@@ -937,7 +937,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.gamemode = gamemode;
 
-        this.allowFlight = this.isCreative();
+        this.allowFlight = this.isCreative() || this.isSpectator();
 
         if (this.isSpectator()) {
             this.keepMovement = true;
@@ -1078,7 +1078,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     @Override
     protected void checkGroundState(double movX, double movY, double movZ, double dx, double dy, double dz) {
-        if (!this.onGround || movX != 0 || movY != 0 || movZ != 0) {
+        /*if (!this.onGround || movX != 0 || movY != 0 || movZ != 0) {
             boolean onGround = false;
 
             AxisAlignedBB bb = this.boundingBox.clone();
@@ -1114,7 +1114,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.groundBlocks = blocks;
             this.onGround = onGround;
-        }
+        }*/
 
         this.isCollided = this.onGround;
     }
@@ -1869,6 +1869,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.setRotation(movePlayerPacket.yaw, movePlayerPacket.pitch);
                     this.newPosition = newPos;
                     this.forceMovement = null;
+
+                    this.onGround = movePlayerPacket.onGround;
                 }
 
                 if (riding != null) {
