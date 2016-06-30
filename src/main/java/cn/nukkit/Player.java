@@ -950,7 +950,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.namedTag.putInt("playerGameType", this.gamemode);
 
         SetPlayerGameTypePacket pk = new SetPlayerGameTypePacket();
-        pk.gamemode = this.gamemode & 0x01;
+        pk.gamemode = this.gamemode != SPECTATOR ? this.gamemode & 0x01 : SPECTATOR & 0x01;
         this.dataPacket(pk);
         this.sendSettings();
 
