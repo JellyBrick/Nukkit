@@ -1,5 +1,6 @@
 package cn.nukkit.entity;
 
+import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.data.ShortEntityData;
@@ -116,7 +117,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
                 e = ((EntityDamageByChildEntityEvent) source).getChild();
             }
 
-            if (e.isOnFire()) {
+            if (e.isOnFire() && !(e instanceof Player)) {
                 this.setOnFire(2 * this.server.getDifficulty());
             }
 
