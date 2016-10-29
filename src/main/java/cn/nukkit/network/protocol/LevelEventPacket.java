@@ -38,6 +38,8 @@ public class LevelEventPacket extends DataPacket {
     public static final int EVENT_SOUND_ITEM_FRAME_ITEM_REMOVED = 1043;
     public static final int EVENT_SOUND_ITEM_FRAME_ITEM_ROTATED = 1044;
 
+    public static final int EVENT_SOUND_EXP_PICKUP = 1051;
+    public static final int EVENT_SOUND_BLOCK_PLACE = 1052;
     public static final int EVENT_SOUND_BUTTON_CLICK = 3500;
 
     public static final int EVENT_PARTICLE_SHOOT = 2000;

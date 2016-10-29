@@ -43,6 +43,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.format.generic.BaseFullChunk;
 import cn.nukkit.level.particle.CriticalParticle;
 import cn.nukkit.level.sound.ClickSound;
+import cn.nukkit.level.sound.ExpPickupSound;
 import cn.nukkit.level.sound.LaunchSound;
 import cn.nukkit.math.*;
 import cn.nukkit.metadata.MetadataValue;
@@ -1204,7 +1205,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     int exp = xpOrb.getExp();
                     this.addExperience(exp);
                     entity.kill();
-                    ClickSound sound = new ClickSound(this, (float) (new NukkitRandom().nextRange(260, 360)) / 100f);
+                    ExpPickupSound sound = new ExpPickupSound(this, (float) (new NukkitRandom().nextRange(260, 360)) / 100f);
                     this.getLevel().addSound(sound);
                     break;
                 }
